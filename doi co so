@@ -1,0 +1,112 @@
+/*
+ho ten: Nguyen Hoang Bao
+mssv: 2001240034 - st6
+*/
+
+#include <stdio.h>
+#include <conio.h>
+
+typedef int Itemtype;
+struct StackNode
+{
+	Itemtype Info;
+	StackNode *Next;
+};
+
+struct Stack
+{
+	StackNode *Top;
+};
+
+StackNode *createStackNode(Itemtype x)
+{
+	StackNode *p = new StackNode;
+	if (!p)
+	{
+		printf("Khong du bo nho!");
+		_getch();
+		return NULL;
+	}
+	p->Info = x;
+	p->Next = NULL;
+	return p;
+}
+
+void initStack(Stack &s)
+{
+	s.Top = NULL;
+}
+
+int isEmpty(Stack s)
+{
+	if (s.Top == NULL)
+		return 1;
+	else
+		return 0;
+}
+
+int push(Stack &s, StackNode *p)
+{
+	if (!p)
+		return 0;
+	if (isEmpty(s))
+	{
+		s.Top = p;
+	}
+	else
+	{
+		p->Next = s.Top;
+		s.Top = p;
+	}
+	return 1;
+}
+
+int pop(Stack &s, Itemtype x)
+{
+	if (isEmpty(s) == 1)
+		return 0;
+	StackNode *p = s.Top;
+	s.Top = s.Top->Next;
+	x = p->Info;
+	delete p;
+	return 1;
+}
+
+void DoiCoSo(int n, int a)
+{
+	int du;
+	StackNode *p;
+	Stack s;
+	Itemtype x;
+	initStack(s);
+	while (n != 0)
+	{
+		du = n % a;
+		p = createStackNode(du);
+		push(s, p);
+		n /= a;
+	}
+	printf("Ket qua doi sang co so%d la: ", a);
+	while (!isEmpty(s))
+	{
+		pop(s, x);
+		printf("%5d", x);
+	}
+}
+
+int main()
+{
+	int n, a;
+	do
+	{
+		printf("\nNhap n:");
+		scanf("%d", &n);
+	} while (n <= 0);
+	do
+	{
+		printf("\nNhap a:");
+		scanf("%d", &a);
+	} while (a <= 0);
+	DoiCoSo(n, a);
+	return 0;
+}
